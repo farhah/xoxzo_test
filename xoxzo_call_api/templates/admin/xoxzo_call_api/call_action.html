@@ -1,0 +1,58 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify mezzanine_tags %}
+
+{% block content %}
+
+<!--<script type="text/javascript">-->
+  <!--function rest() {-->
+      <!--if (confirm('You are about to make a call to {{ name }} at {{ recipient }}')) {-->
+          <!--var data = "caller={{ caller_num }}&recipient={{ recipient }}&recording_url={{ recording_url }}";-->
+
+          <!--var xhr = new XMLHttpRequest();-->
+          <!--xhr.withCredentials = true;-->
+
+          <!--xhr.addEventListener("readystatechange", function () {-->
+              <!--if (this.readyState === 4) {-->
+                  <!--console.log(this.responseText);-->
+              <!--}-->
+          <!--});-->
+
+          <!--xhr.open("POST", "{{ api_call}}");-->
+          <!--xhr.setRequestHeader("content-type", "application/json");-->
+          <!--xhr.setRequestHeader("authorization", "{{ auth }}");-->
+          <!--xhr.setRequestHeader("Access-Control-Allow-Origin", "*");-->
+          <!--xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');-->
+          <!--xhr.setRequestHeader('Access-Control-Allow-Headers', "origin, x-http-method-override, accept, content-type, authorization, x-pingother, if-match, if-modified-since, if-none-match, if-unmodified-since, x-requested-with");-->
+          <!--xhr.setRequestHeader('Access-Control-Expose-Headers', "tag, link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes");-->
+          <!--xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');-->
+
+          <!--xhr.send(data);-->
+      <!--} else {-->
+          <!--// Do nothing!-->
+      <!--}-->
+  <!--}-->
+<!--</script>-->
+
+<div id="content-main">
+    Your call id is {{ callid }} <br><br>
+    Message is {{ recording_url }} <br><br>
+
+  <!--<form action="" method="POST">-->
+    <!--{% csrf_token %}-->
+
+    <!--<p>-->
+        <!--<input type="hidden" name="caller" value="{{ caller_num }}">-->
+        <!--<input type="hidden" name="recipient" value="{{ recipient }}">-->
+
+      <!--<input value="Yes" class="default" name="_yes" type="submit">-->
+  <!--&lt;!&ndash;<input type="button" class="default" value="YES" title="Make a phone call using xoxzo api" href="#" onclick="rest();return false;">&nbsp;&ndash;&gt;-->
+  <!--<input type="button" class='cancellink' href="#" onClick="javascript:history.go(-1);" value="No">-->
+<!--</p>-->
+
+  <!--</form>-->
+
+
+
+</div>
+
+{% endblock %}
