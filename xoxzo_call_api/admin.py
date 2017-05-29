@@ -4,7 +4,7 @@ from .models import XoxzoPhoneBook
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
 from django.conf.urls import url
-from .settings import caller_num, api_call, recording_url, auth
+from .settings import caller_num, api_call, recording_url, auth, sid, auth_token
 from django.template.response import TemplateResponse
 import requests
 from urllib.parse import quote
@@ -32,10 +32,12 @@ class XoxzoAdmin(admin.ModelAdmin):
         payload = "caller={}&recipient={}&recording_url={}".format(caller_num_en, recipient_en, recording_url_en)
         headers = {
             'content-type': "application/x-www-form-urlencoded",
-            'authorization': auth,
+            # 'authorization': auth,
         }
 
-        response = requests.request("POST", api_call, data=payload, headers=headers)
+        authentication = (sid, auth_token)
+
+        response = requests.request("POST", api_call, data=payload, headers=headers, auth=authentication)
 
         return response.text
 
