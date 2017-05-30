@@ -12,6 +12,10 @@ setup(
     version='0.1',
     packages=find_packages(),
     include_package_data=True,
+    install_requires=[
+        'mezzanine',
+        'django-rq',
+      ],
     license='BSD License',  # example license
     description='A simple phone call using xoxzo phone call api',
     long_description=README,
@@ -19,17 +23,5 @@ setup(
     author='Farhah Kamaruzzaman',
     author_email='farhah.zm@gmail.com',
     classifiers=[
-        'Environment :: Web Environment',
-        'Framework :: Mezzanine',
-        'Framework :: Mezzanine :: 4.2.3',  # replace "X.Y" as appropriate
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',  # example license
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: API',
-	'Topic :: Internet :: WWW/HTTP :: REST',
-	'Topic :: Internet :: Telephony',
-
     ],
 )
