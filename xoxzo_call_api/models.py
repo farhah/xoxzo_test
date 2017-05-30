@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import User
 
 
 class XoxzoPhoneBook(models.Model):
@@ -14,3 +15,18 @@ class XoxzoPhoneBook(models.Model):
 
     class Meta:
         verbose_name_plural = "Xoxzo phone book"
+
+
+class XoxzoCallStatus(models.Model):
+    recipient = models.CharField(max_length=16, blank=False, null=False)
+    caller_num = models.CharField(max_length=16, blank=False, null=False)
+    recording_url = models.URLField(max_length=500, blank=False, null=False)
+    call_made_by = models.ForeignKey(User)
+    status_code = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=200, blank=True, null=True)
+    call_id = models.CharField(max_length=200, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Xoxzo call statuses"
+
