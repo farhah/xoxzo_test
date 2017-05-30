@@ -4,10 +4,14 @@ from .models import XoxzoPhoneBook
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
 from django.conf.urls import url
-from .settings import caller_num, api_call, recording_url, auth, sid, auth_token
-from django.template.response import TemplateResponse
 import requests
 from urllib.parse import quote
+from mezzanine.conf import settings
+from .settings import api_call
+from .forms import XoxzoCallForm
+from django.shortcuts import render
+from django.shortcuts import HttpResponseRedirect
+from .views import done_make_call
 
 
 class AddressForm(forms.ModelForm):
@@ -24,7 +28,7 @@ class XoxzoAdmin(admin.ModelAdmin):
     form = AddressForm
     list_display = ('name', 'phone_num', 'call_action')
 
-    def rest_call(self, recipient):
+    def rest_call(self, recipient, caller_num, recording_url):
         caller_num_en = quote(caller_num)
         recipient_en = quote(recipient)
         recording_url_en = quote(recording_url)
@@ -32,43 +36,35 @@ class XoxzoAdmin(admin.ModelAdmin):
         payload = "caller={}&recipient={}&recording_url={}".format(caller_num_en, recipient_en, recording_url_en)
         headers = {
             'content-type': "application/x-www-form-urlencoded",
-            # 'authorization': auth,
         }
 
-        authentication = (sid, auth_token)
+        authentication = (settings.XOXZO_SID, settings.XOXZO_AUTH)
 
         response = requests.request("POST", api_call, data=payload, headers=headers, auth=authentication)
 
         return response.text
 
-    def process_call(self, request, recipient, name, *args, **kwargs):
-        return self.process_action(
-            request=request,
-            recipient=recipient,
-            name=name,
-            action_title='You have made a call to {} at {}'.format(name, recipient),
-        )
+    def process_call(self, request, recipient, name):
+        if request.method == 'POST':
+            form = XoxzoCallForm(request.POST)
 
-    def process_action(self, request, recipient, name, action_title):
-
-        # if request.method != 'POST':
-        #     form = action_form()
+            if form.is_valid():
+                caller_num = form.cleaned_data['caller_num']
+                recording_url = form.cleaned_data['recording_url']
+                callid = self.rest_call(recipient, caller_num, recording_url)
+                callid = callid.split('callid')[1].split('"')[2]
+                # return redirect(done_make_call, callid=callid)
+                return HttpResponseRedirect('/admin/xoxzo_call_api/xoxzophonebook/done/{}'.format(callid))
+        else:
+            form = XoxzoCallForm()
 
         context = self.admin_site.each_context(request)
         context['recipient'] = recipient
         context['name'] = name
-        context['title'] = action_title
-        context['caller_num'] = caller_num
-        context['api_call'] = api_call
-        context['recording_url'] = recording_url
-        context['auth'] = auth
-        context['callid'] = self.rest_call(recipient)
+        context['form'] = form
+        context['title'] = 'Make a call to {} at {}'.format(name, recipient)
 
-        return TemplateResponse(
-            request,
-            'admin/xoxzo_call_api/call_action.html',
-            context,
-        )
+        return render(request, 'admin/xoxzo_call_api/call_action.html', context)
 
     def get_urls(self):
         urls = super().get_urls()
@@ -78,17 +74,17 @@ class XoxzoAdmin(admin.ModelAdmin):
                 self.admin_site.admin_view(self.process_call),
                 name='make-call',
             ),
+            url(r'^done/(?P<callid>.*?)/$',
+                done_make_call,
+                name='make-call-done',)
         ]
         return custom_urls + urls
 
     def call_action(self, obj):
         return format_html(
             '<p><ul class="object-tools"><li><a class="focus" href="{}">Call this person</a></li></ul></p>',
-            # '<input type="button" value="Call this person"></input>',
             reverse('admin:make-call', args=[obj.phone_num, obj.name])
-            # '<p><ul class="object-tools"><li><a class="focus" href="#" title="Make a call using xoxzo api" '
-            # 'onclick="MyFunction();return false;">'
-            # 'Call this person</a></li></ul></p>'
+
         )
 
     call_action.short_description = 'Call'

@@ -3,39 +3,23 @@
 
 {% block content %}
 
-<!--<script type="text/javascript">-->
-  <!--function rest() {-->
-      <!--if (confirm('You are about to make a call to {{ name }} at {{ recipient }}')) {-->
-          <!--var data = "caller={{ caller_num }}&recipient={{ recipient }}&recording_url={{ recording_url }}";-->
-
-          <!--var xhr = new XMLHttpRequest();-->
-          <!--xhr.withCredentials = true;-->
-
-          <!--xhr.addEventListener("readystatechange", function () {-->
-              <!--if (this.readyState === 4) {-->
-                  <!--console.log(this.responseText);-->
-              <!--}-->
-          <!--});-->
-
-          <!--xhr.open("POST", "{{ api_call}}");-->
-          <!--xhr.setRequestHeader("content-type", "application/json");-->
-          <!--xhr.setRequestHeader("authorization", "{{ auth }}");-->
-          <!--xhr.setRequestHeader("Access-Control-Allow-Origin", "*");-->
-          <!--xhr.setRequestHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');-->
-          <!--xhr.setRequestHeader('Access-Control-Allow-Headers', "origin, x-http-method-override, accept, content-type, authorization, x-pingother, if-match, if-modified-since, if-none-match, if-unmodified-since, x-requested-with");-->
-          <!--xhr.setRequestHeader('Access-Control-Expose-Headers', "tag, link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes");-->
-          <!--xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');-->
-
-          <!--xhr.send(data);-->
-      <!--} else {-->
-          <!--// Do nothing!-->
-      <!--}-->
-  <!--}-->
-<!--</script>-->
 
 <div id="content-main">
-    Your call id is {{ callid }} <br><br>
-    Message is {{ recording_url }} <br><br>
+<form method="post" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %} action="">
+    {% csrf_token %}
+    <div>
+        <fieldset class="module aligned ">
+        {{ form.as_p }}
+            </fieldset>
+    </div>
+        <div>
+            <input class="default" type="submit"
+                value="{% if page.form.button_text %}{{ page.form.button_text }}{% else %}{% trans "Submit" %}{% endif %}">
+            <input type="button" class='cancellink' href="#" onClick="javascript:history.go(-1);" value="Cancel">
+        </div>
+</form>
+    <!--Your call id is {{ callid }} <br><br>-->
+    <!--Message is {{ recording_url }} <br><br>-->
 
   <!--<form action="" method="POST">-->
     <!--{% csrf_token %}-->
