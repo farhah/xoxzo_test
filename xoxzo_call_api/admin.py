@@ -77,15 +77,17 @@ class CallStatus(admin.ModelAdmin):
         #  to disable manual add of call status
         return False
 
-    def has_change_permission(self, request, obj=None):
-        if request.user.is_superuser:
-            return True
-        return False
-
     def has_delete_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
         return False
+
+    def change_view(self, request, object_id, extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_save_and_continue'] = False
+        extra_context['show_save'] = False
+
+        return super(CallStatus, self).change_view(request, object_id, extra_context=extra_context)
 
     def get_queryset(self, request):
         qs = super(CallStatus, self).get_queryset(request)
