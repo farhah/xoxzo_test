@@ -13,6 +13,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
+        'setuptools',
         'mezzanine',
         'django-rq',
       ],
@@ -23,5 +24,17 @@ setup(
     author='Farhah Kamaruzzaman',
     author_email='farhah.zm@gmail.com',
     classifiers=[
+        'Environment :: Web Environment',
+        'Framework :: Mezzanine',
+        'API :: xoxzo',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python3',
+        'Topic :: Internet :: WWW/HTTP',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Internet :: WWW/HTTP :: WSGI',
+        'Topic :: Software Development :: Libraries :: Application Frameworks',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
