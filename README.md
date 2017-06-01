@@ -32,7 +32,10 @@ stdout_logfile = /var/log/redis/redis-server.log
 numprocs=1
 
 directory=/path/to/project
-user = root
+user = farhah
+environment=
+        XOXZO_SID="VzaYbNeQncmSUPOw08rGBJH7yIXf6jEh",
+        XOXZO_AUTH="bght4jfmsozi5yq6nlpa90x31urd27ke"
 stopsignal=TERM
 
 autostart=true
@@ -73,10 +76,10 @@ RQ_QUEUES = {
 }
 ```
 
-#### `sudo vi /etc/systemd/system/gunicorn.service`
+~~#### `sudo vi /etc/systemd/system/gunicorn.service`
 under `[Service]`
 
-`EnvironmentFile=/home/farhah/.virtualenvs/p3/bin/postactivate`
+~~`EnvironmentFile=/home/farhah/.virtualenvs/p3/bin/postactivate`
 
 
 
