@@ -54,7 +54,6 @@ XOXZO_AUTH=VzaYbNeQncmSUPOw08rGBJH7yIXf6jEh
 
 INSTALLED_APPS = (
     "xoxzo_call_api",
-    "django_rq",
 )
 
 XOXZO_SID = os.getenv('XOXZO_SID')
