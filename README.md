@@ -77,7 +77,7 @@ RQ_QUEUES = {
 ```
 
 ~~#### `sudo vi /etc/systemd/system/gunicorn.service`~~
-~~under `[Service]`
+~~under `[Service]`~~
 
 ~~`EnvironmentFile=/home/farhah/.virtualenvs/p3/bin/postactivate`~~
 
