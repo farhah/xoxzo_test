@@ -18,6 +18,14 @@ def call_task(user, recipient, caller_num, recording_url, sid, auth):
 
     authentication = (sid, auth)
 
+    data = XoxzoCallStatus(call_made_by=user, recipient=recipient, caller_num=caller_num,
+                           status_code='PENDING',
+                           status='PENDING',
+                           call_id='PENDING',
+                           recording_url=recording_url)
+
+    data.save()
+
     res = requests.request("POST", api_call, data=payload, headers=headers, auth=authentication)
 
     if res.status_code == 201:
@@ -30,9 +38,5 @@ def call_task(user, recipient, caller_num, recording_url, sid, auth):
         status = res.text.split('detail')[1].split('"')[2]
         callid = 'None'
 
-    data = XoxzoCallStatus(call_made_by=user, recipient=recipient, caller_num=caller_num,
-                           status_code=status_code,
-                           status=status,
-                           call_id=callid,
-                           recording_url=recording_url)
-    data.save()
+    XoxzoCallStatus.objects.filter(id=data.pk).update(status_code=status_code, status=status, call_id=callid)
+

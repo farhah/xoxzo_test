@@ -1,5 +1,16 @@
 from django import forms
 from django.core.validators import RegexValidator
+from .models import XoxzoPhoneBook
+
+
+class AddressForm(forms.ModelForm):
+    name = forms.CharField()
+    phone_num = forms.CharField()
+    address = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = XoxzoPhoneBook
+        fields = ('name', 'phone_num', 'address')
 
 
 class XoxzoCallForm(forms.Form):

@@ -1,6 +1,13 @@
 # xoxzo_test
 make phone call using xoxzo api
 
+### Install package
+
+`git clone git@github.com:farhah/xoxzo_test.git`
+
+`pip install xoxzo_test/dist/xoxzo-phonecall-0.1.tar.gz`
+
+
 ## Preparation
 
 1. Install redis
@@ -60,15 +67,10 @@ RQ_QUEUES = {
 }
 ```
 
-#### `sudo vi /etc/systemd/system/gunicorn.service` 
+#### `sudo vi /etc/systemd/system/gunicorn.service`
 under `[Service]`
 
 `EnvironmentFile=/home/farhah/.virtualenvs/p3/bin/postactivate`
 
 
-### Install package
-
-`git clone git@github.com:farhah/xoxzo_test.git`
-
-`pip install xoxzo_test/dist/xoxzo-phonecall-0.1.tar.gz`
 

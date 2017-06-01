@@ -1,30 +1,29 @@
 from django.contrib import admin
-from django import forms
 from .models import XoxzoPhoneBook, XoxzoCallStatus
 from django.utils.html import format_html
 from django.core.urlresolvers import reverse
 from django.conf.urls import url
-from .forms import XoxzoCallForm
+from .forms import XoxzoCallForm, AddressForm
 from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
-from .views import done_make_call
 from .tasks import call_task
 from mezzanine.conf import settings
-
-
-class AddressForm(forms.ModelForm):
-    name = forms.CharField()
-    phone_num = forms.CharField()
-    address = forms.CharField(widget=forms.Textarea)
-
-    class Meta:
-        model = XoxzoPhoneBook
-        fields = ('name', 'phone_num', 'address')
 
 
 class XoxzoAdmin(admin.ModelAdmin):
     form = AddressForm
     list_display = ('name', 'phone_num', 'call_action')
+
+    def get_queryset(self, request):
+        qs = super(XoxzoAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(owner=request.user)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.owner = request.user
+        obj.save()
 
     def process_call(self, request, recipient, name):
         if request.method == 'POST':
@@ -46,6 +45,9 @@ class XoxzoAdmin(admin.ModelAdmin):
 
         return render(request, 'admin/xoxzo_call_api/call_action.html', context)
 
+    def done_make_call(self, request):
+        return render(request, 'admin/xoxzo_call_api/done.html', {})
+
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
@@ -55,7 +57,7 @@ class XoxzoAdmin(admin.ModelAdmin):
                 name='make-call',
             ),
             url(r'^done/$',
-                done_make_call,
+                self.admin_site.admin_view(self.done_make_call),
                 name='make-call-done',)
         ]
         return custom_urls + urls
