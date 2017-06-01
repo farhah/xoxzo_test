@@ -42,14 +42,15 @@ autostart=true
 autorestart=true
 ```
 
-3. Install nginx + gunicorn from `https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04`
+change xoxzo sid and auth accordingly
 
-## Prepare environment variable
-add these lines into `/path/to/.virtualenv/virtual_env_name/bin/postactivate`
 ```python
-XOXZO_SID=bght4jfmsozi5yq6nlpa90x31urd27ke
-XOXZO_AUTH=VzaYbNeQncmSUPOw08rGBJH7yIXf6jEh
+environment=
+        XOXZO_SID="VzaYbNeQncmSUPOw08rGBJH7yIXf6jEh",
+        XOXZO_AUTH="bght4jfmsozi5yq6nlpa90x31urd27ke"
 ```
+
+3. Install nginx + gunicorn from `https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04`
 
 
 #### in settings.py of mezzanine project, add these lines:
