@@ -3,10 +3,11 @@ from urllib.parse import quote
 from .settings import api_call
 import requests
 from .models import XoxzoCallStatus
+from mezzanine.conf import settings
 
 
 @job
-def call_task(user, recipient, caller_num, recording_url, sid, auth):
+def call_task(user, recipient, caller_num, recording_url):
     caller_num_en = quote(caller_num)
     recipient_en = quote(recipient)
     recording_url_en = quote(recording_url)
@@ -16,7 +17,7 @@ def call_task(user, recipient, caller_num, recording_url, sid, auth):
         'content-type': "application/x-www-form-urlencoded",
     }
 
-    authentication = (sid, auth)
+    authentication = (settings.XOXZO_SID, settings.XOXZO_AUTH)
 
     data = XoxzoCallStatus(call_made_by=user, recipient=recipient, caller_num=caller_num,
                            status_code='PENDING',

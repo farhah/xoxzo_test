@@ -7,7 +7,6 @@ from .forms import XoxzoCallForm, AddressForm
 from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
 from .tasks import call_task
-from mezzanine.conf import settings
 
 
 class XoxzoAdmin(admin.ModelAdmin):
@@ -32,7 +31,7 @@ class XoxzoAdmin(admin.ModelAdmin):
             if form.is_valid():
                 caller_num = form.cleaned_data['caller_num']
                 recording_url = form.cleaned_data['recording_url']
-                call_task.delay(request.user, recipient, caller_num, recording_url, settings.XOXZO_SID, settings.XOXZO_AUTH)  # send to queue to avoid io blocking
+                call_task.delay(request.user, recipient, caller_num, recording_url)  # send to queue to avoid io blocking
                 return HttpResponseRedirect('/admin/xoxzo_call_api/xoxzophonebook/done/')
         else:
             form = XoxzoCallForm()
