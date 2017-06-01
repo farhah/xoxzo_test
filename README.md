@@ -51,6 +51,12 @@ XOXZO_AUTH=VzaYbNeQncmSUPOw08rGBJH7yIXf6jEh
 
 #### in settings.py of mezzanine project, add these lines:
 ```python
+
+INSTALLED_APPS = (
+    "xoxzo_call_api",
+    "django_rq",
+)
+
 XOXZO_SID = os.getenv('XOXZO_SID')
 XOXZO_AUTH = os.getenv('XOXZO_AUTH')
 ```
